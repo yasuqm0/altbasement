@@ -1,0 +1,46 @@
+name: altbasement
+
+services:
+  db:
+    image: postgres:16
+    container_name: altbasement_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - altbasement_pgdata:/var/lib/postgresql/data
+    networks:
+      - altbasement_net
+
+  backend:
+    build: ./backend
+    container_name: altbasement_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "8090:8000"
+    networks:
+      - altbasement_net
+
+  frontend:
+    build: ./frontend
+    container_name: altbasement_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8091:5173"
+    networks:
+      - altbasement_net
+
+volumes:
+  altbasement_pgdata:
+
+networks:
+  altbasement_net:
+    name: altbasement_net

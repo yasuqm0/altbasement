@@ -1,0 +1,25 @@
+# Entornos y secretos
+.env
+*.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.sqlite3
+venv/
+env/
+
+# Node / Vite
+node_modules/
+dist/
+.vite/
+
+# Archivos de sistema
+.DS_Store
+*.log
+
+# Django
+staticfiles/
+media/
