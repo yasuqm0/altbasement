@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
+    'django_extensions',
     'accounts',
     'catalog',
     'orders',
@@ -114,5 +115,5 @@ SIMPLE_JWT = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CULQI_PUBLIC_KEY = os.environ.get('pk_test_Qs4B47yj10s6SBiL')
-CULQI_SECRET_KEY = os.environ.get('sk_test_LOkjLXrbhMUrtpxm')
+CULQI_PUBLIC_KEY = os.environ.get('CULQI_PUBLIC_KEY')
+CULQI_SECRET_KEY = os.environ.get('CULQI_SECRET_KEY')

@@ -8,3 +8,5 @@ djangorestframework-simplejwt
 django-filter
 Pillow
 requests
+django-extensions
+pydot
