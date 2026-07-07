@@ -14,6 +14,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'altbasement.yasudevblog.lat',
+    '45.10.154.19',
 ]
 
 INSTALLED_APPS = [

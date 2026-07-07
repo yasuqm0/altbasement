@@ -177,6 +177,19 @@ const Home = () => {
     setCheckoutLoading(true);
     setCheckoutError('');
 
+    const crearTokenCulqi = () => {
+      return new Promise((resolve, reject) => {
+        window.culqi = function () {
+          if (window.Culqi.token) {
+            resolve(window.Culqi.token.id);
+          } else {
+            reject(window.Culqi.error?.user_message || 'Tarjeta inválida');
+          }
+        };
+        window.Culqi.createToken();
+      });
+    };
+
     try {
       // 1. Crear Orden
       const orderPayload = {
@@ -194,10 +207,11 @@ const Home = () => {
       const newOrder = orderRes.data;
       setCreatedOrder(newOrder);
 
-      // 2. Cobrar Orden (Pasarela Simulada Culqi en backend)
+      // 2. Cobrar Orden (Token real de Culqi)
+      const culqiTokenId = await crearTokenCulqi();
       const paymentPayload = {
         orden_id: newOrder.id,
-        token: 'tok_simulado_' + Math.random().toString(36).substr(2, 9)
+        token: culqiTokenId
       };
 
       await api.post('payments/cobrar/', paymentPayload);
@@ -709,6 +723,8 @@ const Home = () => {
                         maxLength="19"
                         required
                         placeholder="4556 •••• •••• ••••"
+                        id="card[number]"
+                        data-culqi="card[number]"
                         value={cardNumber}
                         onChange={(e) => setCardNumber(e.target.value.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim())}
                         className="bg-black/50 border border-white/10 text-white px-3 py-2 text-xs focus:outline-none focus:border-[#b30000]"
@@ -738,12 +754,18 @@ const Home = () => {
                           maxLength="3"
                           required
                           placeholder="•••"
+                          id="card[cvv]"
+                          data-culqi="card[cvv]"
                           value={cardCVV}
                           onChange={(e) => setCardCVV(e.target.value.replace(/\D/g, ''))}
                           className="bg-black/50 border border-white/10 text-white px-3 py-2 text-xs focus:outline-none focus:border-[#b30000] text-center"
                         />
                       </div>
                     </div>
+
+                    <input type="hidden" id="card[exp_month]" data-culqi="card[exp_month]" value={cardExpiry.split('/')[0] || ''} readOnly />
+                    <input type="hidden" id="card[exp_year]" data-culqi="card[exp_year]" value={cardExpiry.split('/')[1] ? '20' + cardExpiry.split('/')[1] : ''} readOnly />
+                    <input type="hidden" id="card[email]" data-culqi="card[email]" value={user?.email || 'cliente@altbasement.com'} readOnly />
                     
                     <span className="text-[9px] text-neutral-500 uppercase italic mt-1 leading-normal">
                       * El cobro es una simulación local. No se realizarán transacciones monetarias reales.
