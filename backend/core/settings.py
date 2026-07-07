@@ -116,5 +116,5 @@ SIMPLE_JWT = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CULQI_PUBLIC_KEY = os.environ.get('CULQI_PUBLIC_KEY')
-CULQI_SECRET_KEY = os.environ.get('CULQI_SECRET_KEY')
+
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://altbasement.yasudevblog.lat')

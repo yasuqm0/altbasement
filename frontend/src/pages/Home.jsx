@@ -177,19 +177,6 @@ const Home = () => {
     setCheckoutLoading(true);
     setCheckoutError('');
 
-    const crearTokenCulqi = () => {
-      return new Promise((resolve, reject) => {
-        window.culqi = function () {
-          if (window.Culqi.token) {
-            resolve(window.Culqi.token.id);
-          } else {
-            reject(window.Culqi.error?.user_message || 'Tarjeta inválida');
-          }
-        };
-        window.Culqi.createToken();
-      });
-    };
-
     try {
       // 1. Crear Orden
       const orderPayload = {
@@ -207,11 +194,10 @@ const Home = () => {
       const newOrder = orderRes.data;
       setCreatedOrder(newOrder);
 
-      // 2. Cobrar Orden (Token real de Culqi)
-      const culqiTokenId = await crearTokenCulqi();
+      // 2. Cobrar Orden (SIMULADO, sin Culqi real)
       const paymentPayload = {
         orden_id: newOrder.id,
-        token: culqiTokenId
+        token: 'simulado'
       };
 
       await api.post('payments/cobrar/', paymentPayload);
